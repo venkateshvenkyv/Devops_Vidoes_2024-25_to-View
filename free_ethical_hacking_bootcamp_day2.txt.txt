@@ -1,0 +1,26 @@
+ethical hacking phases
+reconissance-->
+scanning-------->      information gathering 
+ports- entry door for specific service
+65535
+0-1023 - well known ports
+1024-49151 - registered ports
+49152-65535 - dynamic /private ports
+
+http protocol-set of rules for communication
+
+gaining access------>
+maitaining access------>   exploitation&privilege escalation
+
+clearing tracks  --> erasing traces
+
+
+IP address - internet protocol address - home address        req IP address -------> server
+							     res server ---------->IP address
+
+IP server - 10.10.90.227
+nmap - network mapper - live/down - ports - services - vulns
+metasploit - exploitation
+
+
+jon pass- alqfna22

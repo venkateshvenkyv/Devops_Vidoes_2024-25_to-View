@@ -1,0 +1,338 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28600\viewh16880\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+========================================================================================================================================================================\
+\
+========================================================================================================================================================================\
+\
+\
+========================================================================================================================================================================\
+WRITE A SCRIPT TO KNOW WHICH USER WE CURRENTLY LOGGED INT\
+\
+if [ $(whoami) = 'root' ]; then\
+                echo "You are root"\
+        else\
+                        echo "You are not root"\
+fi\
+\
+========================================================================================================================================================================\
+SCRIPT TO CREATE 10 FOLDERS:\
+Name_of_dir=$1\
+start_no=$2\
+end_no=$3\
+\
+eval mkdir $Name_of_dir\{$start_no..$end_no\}\
+\
+\
+NOTE: \
+EVAL : This is used to evaluate the entire expression and execute the command\
+Command : ./one.sh mustafa 1 10\
+This command will create 1 to 10 folders\
+\
+========================================================================================================================================================================\
+\
+\
+SCRIPT TO TAKE BACKUP LOGS:\
+\
+#!/bin/bash\
+src=/var/log/httpd/access_log\
+dest=mybackup\
+time=$(date +"%Y-%m-%d-%H-%M-%S")\
+backupfile=$dest/$time.tgz\
+\
+#Taking Backup\
+echo "Taking backup on $time"\
+tar zcvf $backupfile --absolute-names $src\
+\
+if [ $\{?\} -eq 0 ]\
+then\
+        echo "Backup Complete"\
+else\
+        exit 1\
+fi\
+\
+The z option compresses the backup using gzip, \
+the c option creates a new archive, \
+the v option enables verbose mode to display the progress, \
+and the f option specifies the output file.\
+--absolute-names : used to store the filenames with slashes\
+\
+\
+if [ $\{?\} -eq 0 ]: This line checks the exit status of the tar command using the special variable $?. \
+If the exit status is 0, it means the backup was successful.\
+$\{?\} is a special variable that represents that most recently executed command. \
+\
+========================================================================================================================================================================\
+\
+\
+\
+Functions\
+Functions are a block of code which can be used again and again for doing a specific task thus providing code reusability.\
+\
+\
+Normal Function:\
+#!/bin/bash\
+\
+sum()\{\
+        echo "The numbers are: $n1 $n2"\
+        sum_val=$(($n1+$n2))\
+        echo "Sum: $sum_val"\
+\}\
+\
+n1=$1\
+n2=$2\
+sum\
+\
+\
+\
+\
+Function with return values\
+To access the return value of the function we need to use $? to access that value\
+#!/bin/bash\
+\
+sum()\{\
+        echo "The numbers are: $n1 $n2"\
+        sum_val=$(($n1+$n2))\
+        echo "Sum: $sum_val"\
+        return $sum_val\
+\}\
+\
+n1=$1\
+n2=$2\
+sum\
+\
+echo "Retuned value from function is $?"\
+\
+\
+========================================================================================================================================================================\
+Variables in Functions\
+The variable is a placeholder for saving a value which can be later accessed using that name. There are two types of variable\
+\
+Global - Variable defined outside a function which can be accessed throughout the script\
+Local - Variable defined inside a function and can be accessed only within it\
+\
+\
+#!/bin/bash\
+\
+# x & y are global variables\
+x=10\
+y=20\
+\
+sum()\{\
+        sum=$(($x+$y))\
+        echo "Global Variable Addition: $sum"\
+\}\
+\
+sum\
+\
+sub()\{\
+        # a & b are local variables\
+        local a=20\
+        local b=10\
+        local sub=$(($a-$b))\
+        echo "Local Variable Substraction: $sub"\
+\}\
+\
+sub\
+\
+\
+==============================================================================================================================\
+\
+\
+\
+SCRIPT TO CHECK THE TOOLS ARE INSTALLED OR NOT:\
+\
+#!/bin/bash  \
+check_package() \{\
+    local PACKAGE_NAME="$1"\
+    if ! command -v "$\{PACKAGE_NAME\}" > /dev/null 2>&1\
+    then\
+           printf "$\{PACKAGE_NAME\} is not installed.\\n"\
+    else\
+           printf "$\{PACKAGE_NAME\} is already installed.\\n"\
+    fi\
+\}\
+check_package "vim"\
+check_package "git"\
+\
+==============================================================================================================================\
+SCRIPT TO  INSTALL PACKAGES USING FUNCTIONS:\
+\
+#!/bin/bash\
+install_package() \{\
+  local PACKAGE_NAME="$1"\
+  yum install "$\{PACKAGE_NAME\}" -y\
+\}\
+install_package \'93httpd\
+install_package "git"\
+==============================================================================================================================\
+SCRIPT TO CHECK HTTPD IS RUNNIG OR NOT?\
+\
+#!/bin/bash\
+check_service() \{\
+    if systemctl status $1 | grep "active (running)"; then\
+        return 0\
+    else\
+        return 1\
+    fi\
+\}\
+\
+# Call the check_service function with argument "apache2"\
+if check_service httpd; then\
+    echo "HTTPD is running"\
+else\
+    echo "HTTPD is not running"\
+fi\
+\
+\
+\
+==============================================================================================================================\
+TO CHECK MULTIPLE SERVICES ARE RUNNING OR NOT \
+\
+#!/bin/bash\
+\
+check_services() \{\
+    for service in "$@"; do\
+        if systemctl status "$service" | grep "active (running)"; then\
+            echo "$service is running"\
+        else\
+            echo "$service is not running"\
+        fi\
+    done\
+\}\
+# adding service name apache2 mysql to check \
+check_services apache2 mysql\
+==============================================================================================================================\
+TO CHECK THE DISK USAGE OF /HOME DIRECTORY\
+\
+\
+#!/bin/bash\
+\
+get_disk_usage() \{\
+    directory=$1\
+    # Calculate disk usage of specified directory\
+    disk_usage=$(du -s $directory | awk '\{print $1\}')\
+    echo $disk_usage\
+\}\
+\
+# Call the function and store the result in a variable\
+usage=$(get_disk_usage /home)\
+\
+# Display the result\
+echo "The disk usage is: $usage"\
+\
+==============================================================================================================================\
+\
+CREATE A SCRIPT THAT USER EXIST OR NOT, IF NOT LETS CREATE \
+\
+echo "Enter username:"\
+read username\
+\
+# Check if user exists\
+id $username >/dev/null 2>&1\
+if [ $? -eq 0 ]; then\
+  echo "User exists"\
+else\
+  echo "User does not exist"\
+  read -p "Do you want to create the user? (y/n) " create_user\
+  if [ $create_user == "y" ]; then\
+    read -s -p "Enter password: " password\
+    echo\
+    useradd -m -p $(openssl passwd -1 $password) $username\
+    echo "User created"\
+  else\
+    exit 0\
+  fi\
+fi\
+\
+\
+NOTE:\
+/dev/null 2>%&1 \
+the command is used to check the user and group IDs associated with a specified username, \
+but the actual output is discarded, and only the success or failure of the command is considered.\
+==============================================================================================================================\
+\
+SCRIPT TO GET OLDER FILES THAN 60 DAYS\
+\
+#!/bin/bash\
+\
+find path -mtime +60 -exec rm -f \{\} \\; \
+\
+1. CREATE A FOLDER (mkdir folder1)\
+2. CREATE SOME FILES IN SIDE THE FOLDER WITH OLDER TIME STAMP (touch -d "Fri, 21 Aug 2023 11:14:00" tcs infosys infotech)\
+3. WRITE A SCRIPT TO FIND FILES : (find folder1 -mtime +60 -exec ls -a \{\} \\; )\
+4. MODIFY THE SCRIPT TO DELETE A FILES : (find myfiles -mtime +60 -exec rm -f \{\} \\;)\
+\
+==============================================================================================================================\
+\
+SCRIPT TO TAKE BACKUP LOGS:\
+\
+#!/bin/bash\
+src=/var/log/httpd/access_log\
+dest=mybackup\
+time=$(date +"%Y-%m-%d-%H-%M-%S")\
+backupfile=$dest/$time.tgz\
+\
+#Taking Backup\
+echo "Taking backup on $time"\
+tar zcvf $backupfile --absolute-names $src\
+\
+if [ $\{?\} -eq 0 ]\
+then\
+        echo "Backup Complete"\
+else\
+        exit 1\
+fi\
+\
+The z option compresses the backup using gzip, \
+the c option creates a new archive, \
+the v option enables verbose mode to display the progress, \
+and the f option specifies the output file.\
+\
+\
+if [ $\{?\} -eq 0 ]: This line checks the exit status of the tar command using the special variable $?. If the exit status is 0, it means the backup was successful.\
+$\{?\} is a special variable that represents that most recently executed command. \
+==============================================================================================================================\
+\
+\
+SCRIPT TO GET MEM INFO:\
+echo "Total Memory: $(free -m | awk '/Mem/ \{print $2 " MB"\}')"\
+echo " Used Memory: $(free -m | awk '/Mem/ \{print $3 " MB"\}')"\
+echo "Free Memory: $(free -m | awk '/Mem/ \{print $4 " MB"\}')"\
+echo "Avail Memory: $(free -m | awk '/Mem/ \{print $7 " MB"\}')"\
+\
+\
+NOTE:\
+free -m gives full info about memory \
+Awk : this is used to divide the data in the format of rows and column\'92s which are present in a file.\
+\pard\pardeftab720\partightenfactor0
+\cf0 /Mem : matches the lines which contains memory info\
+$2 : prints the second column of the output of (free -m) command\
+$3 : prints the third column of the output of (free -m) command\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 ==============================================================================================================================\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 SCRIPT TO GET EBS INFO:\
+\
+echo "EBS Volume Usage: $(df -h | grep -E '^/' | awk '\{print $4 " free out of " $2\}')"\
+\
+\
+NOTE:\
+-E \'91^/\'91  : that ends with \
+awk : used to split the output on rows and columns \
+$4 : used mem\
+$2 : total mem \
+\
+\
+\
+\
+}

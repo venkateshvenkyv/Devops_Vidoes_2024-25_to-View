@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    environment {
+        
+        SONAR_TOKEN = credentials('sonar-token')  
+    }
+    tools {
+        maven "MAVEN3"
+    }
+
+    stages {
+        stage('Hello') {
+            steps {
+                git "https://github.com/devops0014/one.git"
+            }
+        }
+        stage ("Build") {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+        stage ("test") {
+            steps {
+                script {
+                    withSonarQubeEnv('mysonar') {
+                        def mavenHome = tool name: "MAVEN3", type: "maven"
+                        def mavenCMD = "${mavenHome}/bin/mvn"
+                        sh "${mavenCMD} sonar:sonar"
+                    }
+                }
+            }
+        }
+        stage ("Artifact") {
+            steps {
+               nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: 'target/myweb-8.4.8.war', type: 'war']], credentialsId: 'c96b3ffd-ae7d-4d36-95a8-184b00d6255f', groupId: 'in.javahome', nexusUrl: '54.196.36.112:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'my-repo', version: '8.4.8' 
+            }
+        }
+        stage ("Deploy") {
+            steps {
+                sshagent(['25e8d3a9-62fd-478b-8e4d-2ee40674436f']) {
+      sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Job-1/target/myweb-8.4.8.war ec2-user@18.117.254.190:/opt/apache-tomcat-9.0.73/webapps"
+            }
+        }
+    }
+}

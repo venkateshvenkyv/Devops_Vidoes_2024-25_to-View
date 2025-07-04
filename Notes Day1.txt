@@ -1,0 +1,56 @@
+what is cyber security
+system-computer,mobile,iot,ot
+network
+cyber attacks - data stealing, attacking on availability
+data protect
+
+ethical hacking
+steps replicate - reconnaissance, scanning, gaining access, maitaining access,clearing tracks
+
+
+cybersecurity vs ethical hacking 
+
+penetration testing vs ethical hacking
+penetration testing - weakness (web/mobile/api/physical)
+types
+white box - full info about the target - full info guy - how depth
+	scoping call - ROE -rules of engagement -scope,permissions,rules
+gray box - partial info - partial knowledge guy - how depth
+	ROE -rules of engagement -scope,permissions,rules
+black box - no info    - without -zero knowledge guy - how depth
+	ROE -rules of engagement -scope,permissions,rules
+
+
+
+penetration testing vs vulnerability assessment - in depth 
+vulnerability assessment - we use one tool to  scan applcation - manually confirm
+
+red teaming vs blue teaming vs purple teaming
+red teaming - offensive - each everything secuirty       -detection & response -escape
+blue teaming - defensive - detection & response implement - catch
+purple teaming - mix of red/blue
+
+
+SOC-security operations center- zero-hero
+1.ppp- preparation,planning,prevention
+2.mdr-monitor,detect,response
+3.rrc-recovery,refinement,compliance -----------pcidss,hipaa,dmca
+
+SIEM- security information & events management & EDR or XDR    - logs collect - we index -event ---danger  -ransomeware - isolate 
+SIEM - SOAR-    security orchestration automation response
+SIM -security information management - collecting logs & analysis
+SEM - security events management - events 
+event - anything suspicious -
+incident - data loss or breach - a event that leads to loss or breach 
+incident response
+
+SOC roles
+CISO - chief information security officer
+security managers
+security engineer-manage-implement-test
+security analyst-mdr
+threat hunter - pro security analyst -updated threats -researcher
+
+
+
+
